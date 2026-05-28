@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,8 +11,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-// Dashboard principal do usuário
-export default function DashboardPage() {
+import { LogoutButton } from "@/components/logout-button";
+import { AppointmentsList } from "@/components/appointments-list";
+
+// Dashboard protegido por sessão
+export default async function DashboardPage() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
     <main className="min-h-screen bg-zinc-100 p-6">
       <section className="mx-auto max-w-5xl space-y-6">
@@ -24,25 +36,21 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <Button asChild>
-            <Link href="/dashboard/novo">
-              Novo agendamento
-            </Link>
-          </Button>
+          <div className="flex items-center gap-3">
+            <p className="text-sm text-zinc-500">
+                Olá, {session.user?.name}
+            </p>
+
+            <LogoutButton />
+
+            <Button asChild>
+                <Link href="/dashboard/novo">Novo agendamento</Link>
+            </Button>
+            </div>
         </header>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Próximos horários</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            {/* Lista provisória até integrar com o banco */}
-            <div className="rounded-lg border border-dashed p-6 text-center text-zinc-500">
-              Nenhum agendamento encontrado.
-            </div>
-          </CardContent>
-        </Card>
+        <AppointmentsList />
+        
       </section>
     </main>
   );

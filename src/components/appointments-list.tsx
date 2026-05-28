@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -76,16 +77,24 @@ export function AppointmentsList() {
     <div className="grid gap-4">
       {appointments.map((appointment) => (
         <Card key={appointment._id}>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-row items-center justify-between gap-4">
             <CardTitle>{appointment.service}</CardTitle>
 
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => handleDelete(appointment._id)}
-            >
-              Excluir
-            </Button>
+            <div className="flex gap-2">
+              <Button asChild variant="outline" size="sm">
+                <Link href={`/dashboard/editar/${appointment._id}`}>
+                  Editar
+                </Link>
+              </Button>
+
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => handleDelete(appointment._id)}
+              >
+                Excluir
+              </Button>
+            </div>
           </CardHeader>
 
           <CardContent className="space-y-2 text-sm text-zinc-600">

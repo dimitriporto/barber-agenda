@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-// Tipagem do agendamento
 type Appointment = {
   _id: string;
   service: string;
@@ -19,26 +19,36 @@ type Appointment = {
   notes: string;
 };
 
-// Lista os agendamentos do usuário
+// Lista e gerencia agendamentos do usuário
 export function AppointmentsList() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchAppointments() {
-      try {
-        const response = await fetch("/api/appointments");
+  async function fetchAppointments() {
+    const response = await fetch("/api/appointments");
+    const data = await response.json();
 
-        const data = await response.json();
+    setAppointments(data);
+    setIsLoading(false);
+  }
 
-        setAppointments(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
+  async function handleDelete(id: string) {
+    const confirmDelete = confirm("Deseja excluir este agendamento?");
+
+    if (!confirmDelete) {
+      return;
     }
 
+    await fetch(`/api/appointments/${id}`, {
+      method: "DELETE",
+    });
+
+    setAppointments((currentAppointments) =>
+      currentAppointments.filter((appointment) => appointment._id !== id)
+    );
+  }
+
+  useEffect(() => {
     fetchAppointments();
   }, []);
 
@@ -66,32 +76,34 @@ export function AppointmentsList() {
     <div className="grid gap-4">
       {appointments.map((appointment) => (
         <Card key={appointment._id}>
-          <CardHeader>
-            <CardTitle>
-              {appointment.service}
-            </CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>{appointment.service}</CardTitle>
+
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => handleDelete(appointment._id)}
+            >
+              Excluir
+            </Button>
           </CardHeader>
 
           <CardContent className="space-y-2 text-sm text-zinc-600">
             <p>
-              <strong>Barbeiro:</strong>{" "}
-              {appointment.barber}
+              <strong>Barbeiro:</strong> {appointment.barber}
             </p>
 
             <p>
-              <strong>Data:</strong>{" "}
-              {appointment.date}
+              <strong>Data:</strong> {appointment.date}
             </p>
 
             <p>
-              <strong>Horário:</strong>{" "}
-              {appointment.time}
+              <strong>Horário:</strong> {appointment.time}
             </p>
 
             {appointment.notes && (
               <p>
-                <strong>Observação:</strong>{" "}
-                {appointment.notes}
+                <strong>Observação:</strong> {appointment.notes}
               </p>
             )}
           </CardContent>

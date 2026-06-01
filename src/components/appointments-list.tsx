@@ -20,6 +20,11 @@ type Appointment = {
   notes: string;
 };
 
+// Formata a data para o padrão brasileiro
+function formatDate(date: string) {
+  return new Date(`${date}T00:00:00`).toLocaleDateString("pt-BR");
+}
+
 // Lista e gerencia agendamentos do usuário
 export function AppointmentsList() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -66,7 +71,7 @@ export function AppointmentsList() {
   if (appointments.length === 0) {
     return (
       <Card>
-        <CardContent className="p-6 text-center text-zinc-500">
+        <CardContent className="p-8 text-center text-zinc-500">
           Nenhum agendamento encontrado.
         </CardContent>
       </Card>
@@ -76,9 +81,17 @@ export function AppointmentsList() {
   return (
     <div className="grid gap-4">
       {appointments.map((appointment) => (
-        <Card key={appointment._id}>
-          <CardHeader className="flex flex-row items-center justify-between gap-4">
-            <CardTitle>{appointment.service}</CardTitle>
+        <Card key={appointment._id} className="overflow-hidden">
+          <CardHeader className="flex flex-col gap-4 border-b bg-white sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                Serviço agendado
+              </p>
+
+              <CardTitle className="mt-1 text-2xl">
+                {appointment.service}
+              </CardTitle>
+            </div>
 
             <div className="flex gap-2">
               <Button asChild variant="outline" size="sm">
@@ -97,23 +110,47 @@ export function AppointmentsList() {
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-2 text-sm text-zinc-600">
-            <p>
-              <strong>Barbeiro:</strong> {appointment.barber}
-            </p>
+          <CardContent className="grid gap-4 p-6 text-sm text-zinc-600 sm:grid-cols-3">
+            <div className="rounded-xl bg-zinc-50 p-4">
+              <p className="text-xs font-medium uppercase text-zinc-400">
+                Barbeiro
+              </p>
 
-            <p>
-              <strong>Data:</strong> {appointment.date}
-            </p>
+              <p className="mt-1 font-semibold text-zinc-800">
+                {appointment.barber}
+              </p>
+            </div>
 
-            <p>
-              <strong>Horário:</strong> {appointment.time}
-            </p>
+            <div className="rounded-xl bg-zinc-50 p-4">
+              <p className="text-xs font-medium uppercase text-zinc-400">
+                Data
+              </p>
+
+              <p className="mt-1 font-semibold text-zinc-800">
+                {formatDate(appointment.date)}
+              </p>
+            </div>
+
+            <div className="rounded-xl bg-zinc-50 p-4">
+              <p className="text-xs font-medium uppercase text-zinc-400">
+                Horário
+              </p>
+
+              <p className="mt-1 font-semibold text-zinc-800">
+                {appointment.time}
+              </p>
+            </div>
 
             {appointment.notes && (
-              <p>
-                <strong>Observação:</strong> {appointment.notes}
-              </p>
+              <div className="rounded-xl bg-zinc-50 p-4 sm:col-span-3">
+                <p className="text-xs font-medium uppercase text-zinc-400">
+                  Observação
+                </p>
+
+                <p className="mt-1 text-zinc-700">
+                  {appointment.notes}
+                </p>
+              </div>
             )}
           </CardContent>
         </Card>

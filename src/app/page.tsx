@@ -44,17 +44,18 @@ export default function Home() {
 
           <div className="rounded-3xl bg-white p-6 shadow-sm">
             <p className="text-sm uppercase tracking-widest text-zinc-400">
-              Barbearia Estilo & Cia
+              Projeto Web II
             </p>
 
             <h2 className="mt-3 text-xl font-bold text-[#1F4D3A]">
-              Sistema de Agendamento
+              Sistema Fullstack de Agendamento
             </h2>
 
             <p className="mt-4 text-zinc-600">
-              Desenvolvido para permitir agendamentos rápidos,
-              organização dos horários e melhor experiência para
-              clientes e profissionais da barbearia.
+              Aplicação desenvolvida com Next.js, TypeScript,
+              MongoDB Atlas, NextAuth e Vercel, integrando
+              autenticação, rotas protegidas e CRUD completo
+              de agendamentos.
             </p>
           </div>
         </div>

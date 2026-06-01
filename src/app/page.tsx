@@ -17,13 +17,13 @@ export default function Home() {
                 Plataforma de Agendamento
               </p>
 
-              <h1 className="mt-4 text-5xl font-bold leading-tight text-zinc-900">
-                Agende horários de barbearia com praticidade.
+              <h1 className="mt-4 text-5xl font-bold leading-tight text-[#1A1A1A]">
+                Barbearia Estilo & Cia
               </h1>
 
               <p className="mt-6 text-lg text-zinc-600">
-                O BarberAgenda permite que clientes criem conta, façam login e
-                gerenciem seus próprios horários de atendimento.
+                Seu estilo, do seu jeito. Agende seus horários com
+                praticidade e acompanhe seus atendimentos em um único lugar.
               </p>
             </div>
 
@@ -44,17 +44,17 @@ export default function Home() {
 
           <div className="rounded-3xl bg-white p-6 shadow-sm">
             <p className="text-sm uppercase tracking-widest text-zinc-400">
-              Projeto Web II
+              Barbearia Estilo & Cia
             </p>
 
-            <h2 className="mt-3 text-xl font-bold text-zinc-900">
-              Sistema completo de agendamento
+            <h2 className="mt-3 text-xl font-bold text-[#1F4D3A]">
+              Sistema de Agendamento
             </h2>
 
             <p className="mt-4 text-zinc-600">
-              Desenvolvido com Next.js, TypeScript, MongoDB Atlas, NextAuth e
-              Vercel, permitindo cadastro, autenticação e gerenciamento de
-              horários em ambiente web.
+              Desenvolvido para permitir agendamentos rápidos,
+              organização dos horários e melhor experiência para
+              clientes e profissionais da barbearia.
             </p>
           </div>
         </div>

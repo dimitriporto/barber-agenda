@@ -1,52 +1,62 @@
-// Componente de navegação otimizado do Next.js
 import Link from "next/link";
+
+import { AppLogo } from "@/components/app-logo";
+import { Button } from "@/components/ui/button";
 
 // Página inicial do sistema
 export default function Home() {
   return (
+    <main className="min-h-screen bg-[#F5F5F5] px-6 py-10">
+      <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-6xl items-center">
+        <div className="grid w-full gap-10 md:grid-cols-[2fr_1fr] md:items-center">
+          <div className="space-y-8">
+            <AppLogo />
 
-    // Container principal ocupando toda altura da tela
-    <main className="min-h-screen bg-zinc-100 flex items-center justify-center px-6">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-widest text-zinc-500">
+                Plataforma de Agendamento
+              </p>
 
-      {/* Área central de apresentação */}
-      <section className="max-w-3xl text-center">
+              <h1 className="mt-4 text-5xl font-bold leading-tight text-zinc-900">
+                Agende horários de barbearia com praticidade.
+              </h1>
 
-        {/* Texto superior */}
-        <p className="text-sm font-semibold text-zinc-500 uppercase tracking-widest">
-          Plataforma de Agendamento
-        </p>
+              <p className="mt-6 text-lg text-zinc-600">
+                O BarberAgenda permite que clientes criem conta, façam login e
+                gerenciem seus próprios horários de atendimento.
+              </p>
+            </div>
 
-        {/* Nome principal do sistema */}
-        <h1 className="mt-4 text-5xl font-bold text-zinc-900">
-          BarberAgenda
-        </h1>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button
+                asChild
+                size="lg"
+                className="bg-[#1F4D3A] hover:bg-[#2E6B52]"
+              >
+                <Link href="/login">Entrar</Link>
+              </Button>
 
-        {/* Descrição resumida da plataforma */}
-        <p className="mt-6 text-lg text-zinc-600">
-          Sistema simples para clientes agendarem horários em uma barbearia,
-          com controle de login, painel de agendamentos e gerenciamento dos
-          serviços marcados.
-        </p>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/register">Criar conta</Link>
+              </Button>
+            </div>
+          </div>
 
-        {/* Área dos botões principais */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="rounded-3xl bg-white p-6 shadow-sm">
+            <p className="text-sm uppercase tracking-widest text-zinc-400">
+              Projeto Web II
+            </p>
 
-          {/* Botão de login */}
-          <Link
-            href="/login"
-            className="rounded-lg bg-zinc-900 px-6 py-3 text-white font-medium hover:bg-zinc-700 transition"
-          >
-            Entrar
-          </Link>
+            <h2 className="mt-3 text-xl font-bold text-zinc-900">
+              Sistema completo de agendamento
+            </h2>
 
-          {/* Botão de cadastro */}
-          <Link
-            href="/register"
-            className="rounded-lg border border-zinc-300 px-6 py-3 text-zinc-900 font-medium hover:bg-white transition"
-          >
-            Criar conta
-          </Link>
-
+            <p className="mt-4 text-zinc-600">
+              Desenvolvido com Next.js, TypeScript, MongoDB Atlas, NextAuth e
+              Vercel, permitindo cadastro, autenticação e gerenciamento de
+              horários em ambiente web.
+            </p>
+          </div>
         </div>
       </section>
     </main>

@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
+import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,8 +17,6 @@ import { Label } from "@/components/ui/label";
 
 // Página de criação de agendamento
 export default function NewAppointmentPage() {
-  const router = useRouter();
-
   const [service, setService] = useState("");
   const [barber, setBarber] = useState("");
   const [date, setDate] = useState("");
@@ -39,14 +37,7 @@ export default function NewAppointmentPage() {
       headers: {
         "Content-Type": "application/json",
       },
-
-      body: JSON.stringify({
-        service,
-        barber,
-        date,
-        time,
-        notes,
-      }),
+      body: JSON.stringify({ service, barber, date, time, notes }),
     });
 
     const data = await response.json();
@@ -61,24 +52,28 @@ export default function NewAppointmentPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-100 p-6">
-      <section className="mx-auto max-w-2xl">
-        <Button asChild variant="outline">
-          <Link href="/dashboard">Voltar</Link>
-        </Button>
+    <main className="min-h-screen bg-zinc-100 px-6 py-10">
+      <section className="mx-auto max-w-3xl space-y-6">
+        <div className="flex items-center justify-between gap-4">
+          <AppLogo />
 
-        <Card className="mt-6">
+          <Button asChild variant="outline">
+            <Link href="/dashboard">Voltar</Link>
+          </Button>
+        </div>
+
+        <Card>
           <CardHeader>
             <CardTitle>Novo agendamento</CardTitle>
 
             <CardDescription>
-              Informe os dados para marcar um horário.
+              Informe os dados do serviço para reservar um horário.
             </CardDescription>
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <div className="space-y-2">
+            <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="service">Serviço</Label>
 
                 <Input
@@ -138,16 +133,20 @@ export default function NewAppointmentPage() {
               </div>
 
               {error && (
-                <p className="rounded-md bg-red-50 p-3 text-sm text-red-600">
+                <p className="rounded-md bg-red-50 p-3 text-sm text-red-600 sm:col-span-2">
                   {error}
                 </p>
               )}
 
-              <Button type="submit" disabled={isLoading}>
-                {isLoading
-                  ? "Salvando..."
-                  : "Salvar agendamento"}
-              </Button>
+              <div className="sm:col-span-2">
+                <Button
+                  type="submit"
+                  className="w-full bg-[#1F4D3A] hover:bg-[#2E6B52]"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Salvando..." : "Salvar agendamento"}
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>

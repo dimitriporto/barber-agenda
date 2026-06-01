@@ -18,7 +18,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-100 p-6">
+    <main className="min-h-screen bg-[#F5F5F5] px-6 py-10">
       <section className="mx-auto max-w-5xl space-y-6">
         <header className="flex flex-col gap-6 rounded-2xl bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-3">
@@ -42,7 +42,10 @@ export default async function DashboardPage() {
 
             <LogoutButton />
 
-            <Button asChild>
+            <Button
+              asChild
+              className="bg-[#1F4D3A] hover:bg-[#2E6B52]"
+            >
               <Link href="/dashboard/novo">
                 Novo agendamento
               </Link>

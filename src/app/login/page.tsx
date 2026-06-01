@@ -46,7 +46,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-100 px-6 py-10">
+    <main className="min-h-screen bg-[#F5F5F5] px-6 py-10">
       <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-5xl items-center justify-center">
         <div className="grid w-full gap-8 md:grid-cols-2 md:items-center">
           <div className="space-y-6">
@@ -107,7 +107,11 @@ export default function LoginPage() {
                   </p>
                 )}
 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="w-full bg-[#1F4D3A] hover:bg-[#2E6B52]"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Entrando..." : "Entrar"}
                 </Button>
               </form>

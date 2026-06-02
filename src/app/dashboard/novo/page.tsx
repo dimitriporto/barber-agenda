@@ -13,7 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 // Página de criação de agendamento
 export default function NewAppointmentPage() {
@@ -52,7 +51,7 @@ export default function NewAppointmentPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-100 px-6 py-10">
+    <main className="min-h-screen bg-[#F5F5F5] px-6 py-10">
       <section className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between gap-4">
           <AppLogo />
@@ -62,9 +61,11 @@ export default function NewAppointmentPage() {
           </Button>
         </div>
 
-        <Card>
+        <Card className="shadow-sm">
           <CardHeader>
-            <CardTitle>Novo agendamento</CardTitle>
+            <CardTitle className="text-[#1F4D3A]">
+              Novo agendamento
+            </CardTitle>
 
             <CardDescription>
               Informe os dados do serviço para reservar um horário.
@@ -74,7 +75,12 @@ export default function NewAppointmentPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="service">Serviço</Label>
+                <label
+                  htmlFor="service"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Serviço
+                </label>
 
                 <Input
                   id="service"
@@ -86,7 +92,12 @@ export default function NewAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="barber">Barbeiro</Label>
+                <label
+                  htmlFor="barber"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Barbeiro
+                </label>
 
                 <Input
                   id="barber"
@@ -98,7 +109,12 @@ export default function NewAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="date">Data</Label>
+                <label
+                  htmlFor="date"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Data
+                </label>
 
                 <Input
                   id="date"
@@ -110,7 +126,12 @@ export default function NewAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="time">Horário</Label>
+                <label
+                  htmlFor="time"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Horário
+                </label>
 
                 <Input
                   id="time"
@@ -122,7 +143,12 @@ export default function NewAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="notes">Observação</Label>
+                <label
+                  htmlFor="notes"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Observação
+                </label>
 
                 <Input
                   id="notes"

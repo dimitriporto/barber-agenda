@@ -84,7 +84,7 @@ export function AppointmentsList() {
         <Card key={appointment._id} className="overflow-hidden">
           <CardHeader className="flex flex-col gap-4 border-b bg-white sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#2E6B52]">
                 Serviço agendado
               </p>
 
@@ -112,7 +112,7 @@ export function AppointmentsList() {
 
           <CardContent className="grid gap-4 p-6 text-sm text-zinc-600 sm:grid-cols-3">
             <div className="rounded-xl bg-zinc-50 p-4">
-              <p className="text-xs font-medium uppercase text-zinc-400">
+              <p className="text-xs font-semibold uppercase text-[#2E6B52]">
                 Barbeiro
               </p>
 
@@ -122,7 +122,7 @@ export function AppointmentsList() {
             </div>
 
             <div className="rounded-xl bg-zinc-50 p-4">
-              <p className="text-xs font-medium uppercase text-zinc-400">
+              <p className="text-xs font-semibold uppercase text-[#2E6B52]">
                 Data
               </p>
 
@@ -132,7 +132,7 @@ export function AppointmentsList() {
             </div>
 
             <div className="rounded-xl bg-zinc-50 p-4">
-              <p className="text-xs font-medium uppercase text-zinc-400">
+              <p className="text-xs font-semibold uppercase text-[#2E6B52]">
                 Horário
               </p>
 
@@ -143,7 +143,7 @@ export function AppointmentsList() {
 
             {appointment.notes && (
               <div className="rounded-xl bg-zinc-50 p-4 sm:col-span-3">
-                <p className="text-xs font-medium uppercase text-zinc-400">
+                <p className="text-xs font-semibold uppercase text-[#2E6B52]">
                   Observação
                 </p>
 

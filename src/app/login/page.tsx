@@ -48,9 +48,11 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-[#F5F5F5] px-6 py-10">
       <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-5xl items-center justify-center">
-        <div className="grid w-full gap-8 md:grid-cols-2 md:items-center">
-          <div className="space-y-6">
-            <AppLogo />
+        <div className="grid w-full gap-8 md:grid-cols-2 items-center">
+          <div className="space-y-6 text-center md:text-left">
+            <div className="flex justify-center md:justify-start">
+              <AppLogo variant="large" />
+            </div>
 
             <div>
               <h1 className="text-4xl font-bold text-zinc-900">

@@ -25,7 +25,7 @@ export default async function DashboardPage() {
             <AppLogo />
 
             <div>
-              <h1 className="text-3xl font-bold text-zinc-900">
+              <h1 className="text-3xl font-bold text-[#1F4D3A]">
                 Meus agendamentos
               </h1>
 

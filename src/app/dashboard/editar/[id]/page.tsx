@@ -7,7 +7,6 @@ import { useParams } from "next/navigation";
 import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -104,9 +103,11 @@ export default function EditAppointmentPage() {
           </Button>
         </div>
 
-        <Card>
+        <Card className="shadow-sm">
           <CardHeader>
-            <CardTitle>Editar agendamento</CardTitle>
+            <CardTitle className="text-[#1F4D3A]">
+              Editar agendamento
+            </CardTitle>
 
             <CardDescription>
               Atualize os dados do serviço agendado.
@@ -116,7 +117,12 @@ export default function EditAppointmentPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="service">Serviço</Label>
+                <label
+                  htmlFor="service"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Serviço
+                </label>
 
                 <Input
                   id="service"
@@ -127,7 +133,12 @@ export default function EditAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="barber">Barbeiro</Label>
+                <label
+                  htmlFor="barber"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Barbeiro
+                </label>
 
                 <Input
                   id="barber"
@@ -138,7 +149,12 @@ export default function EditAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="date">Data</Label>
+                <label
+                  htmlFor="date"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Data
+                </label>
 
                 <Input
                   id="date"
@@ -150,7 +166,12 @@ export default function EditAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="time">Horário</Label>
+                <label
+                  htmlFor="time"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Horário
+                </label>
 
                 <Input
                   id="time"
@@ -162,7 +183,12 @@ export default function EditAppointmentPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="notes">Observação</Label>
+                <label
+                  htmlFor="notes"
+                  className="text-sm font-semibold text-[#2E6B52]"
+                >
+                  Observação
+                </label>
 
                 <Input
                   id="notes"

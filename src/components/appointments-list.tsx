@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,39 +31,60 @@ function formatDate(date: string) {
   return new Date(`${date}T00:00:00`).toLocaleDateString("pt-BR");
 }
 
-// Lista e gerencia agendamentos do usuário
-export function AppointmentsList() {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { filter, setFilter } = useAppointmentFilterStore();
+// Busca agendamentos
+async function fetchAppointments(): Promise<Appointment[]> {
+  const response = await fetch("/api/appointments");
 
-  async function fetchAppointments() {
-    const response = await fetch("/api/appointments");
-    const data = await response.json();
-
-    setAppointments(data);
-    setIsLoading(false);
+  if (!response.ok) {
+    throw new Error("Erro ao buscar agendamentos.");
   }
 
+  return response.json();
+}
+
+// Lista e gerencia agendamentos do usuário
+export function AppointmentsList() {
+  const queryClient = useQueryClient();
+
+  const { filter, setFilter } = useAppointmentFilterStore();
+
+  const {
+    data: appointments = [],
+    isLoading,
+  } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: fetchAppointments,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await fetch(`/api/appointments/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao excluir agendamento.");
+      }
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["appointments"],
+      });
+    },
+  });
+
   async function handleDelete(id: string) {
-    const confirmDelete = confirm("Deseja excluir este agendamento?");
+    const confirmDelete = confirm(
+      "Deseja excluir este agendamento?"
+    );
 
     if (!confirmDelete) {
       return;
     }
 
-    await fetch(`/api/appointments/${id}`, {
-      method: "DELETE",
-    });
-
-    setAppointments((currentAppointments) =>
-      currentAppointments.filter((appointment) => appointment._id !== id)
-    );
+    deleteMutation.mutate(id);
   }
-
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
 
   if (isLoading) {
     return (
@@ -82,24 +108,30 @@ export function AppointmentsList() {
 
   const today = new Date().toISOString().split("T")[0];
 
-  const filteredAppointments = appointments.filter((appointment) => {
-    if (filter === "today") {
-      return appointment.date === today;
-    }
+  const filteredAppointments = appointments.filter(
+    (appointment) => {
+      if (filter === "today") {
+        return appointment.date === today;
+      }
 
-    if (filter === "upcoming") {
-      return appointment.date > today;
-    }
+      if (filter === "upcoming") {
+        return appointment.date > today;
+      }
 
-    return true;
-  });
+      return true;
+    }
+  );
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
         <Button
           variant={filter === "all" ? "default" : "outline"}
-          className={filter === "all" ? "bg-[#1F4D3A] hover:bg-[#2E6B52]" : ""}
+          className={
+            filter === "all"
+              ? "bg-[#1F4D3A] hover:bg-[#2E6B52]"
+              : ""
+          }
           onClick={() => setFilter("all")}
         >
           Todos
@@ -108,7 +140,9 @@ export function AppointmentsList() {
         <Button
           variant={filter === "today" ? "default" : "outline"}
           className={
-            filter === "today" ? "bg-[#1F4D3A] hover:bg-[#2E6B52]" : ""
+            filter === "today"
+              ? "bg-[#1F4D3A] hover:bg-[#2E6B52]"
+              : ""
           }
           onClick={() => setFilter("today")}
         >
@@ -118,7 +152,9 @@ export function AppointmentsList() {
         <Button
           variant={filter === "upcoming" ? "default" : "outline"}
           className={
-            filter === "upcoming" ? "bg-[#1F4D3A] hover:bg-[#2E6B52]" : ""
+            filter === "upcoming"
+              ? "bg-[#1F4D3A] hover:bg-[#2E6B52]"
+              : ""
           }
           onClick={() => setFilter("upcoming")}
         >
@@ -135,7 +171,10 @@ export function AppointmentsList() {
       ) : (
         <div className="grid gap-4">
           {filteredAppointments.map((appointment) => (
-            <Card key={appointment._id} className="overflow-hidden">
+            <Card
+              key={appointment._id}
+              className="overflow-hidden"
+            >
               <CardHeader className="flex flex-col gap-4 border-b bg-white sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wide text-[#2E6B52]">
@@ -149,7 +188,9 @@ export function AppointmentsList() {
 
                 <div className="flex gap-2">
                   <Button asChild variant="outline" size="sm">
-                    <Link href={`/dashboard/editar/${appointment._id}`}>
+                    <Link
+                      href={`/dashboard/editar/${appointment._id}`}
+                    >
                       Editar
                     </Link>
                   </Button>
@@ -157,7 +198,9 @@ export function AppointmentsList() {
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDelete(appointment._id)}
+                    onClick={() =>
+                      handleDelete(appointment._id)
+                    }
                   >
                     Excluir
                   </Button>

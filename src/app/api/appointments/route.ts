@@ -49,6 +49,33 @@ export async function POST(request: Request) {
     );
   }
 
+  const selectedDateTime = new Date(`${date}T${time}:00`);
+  const now = new Date();
+
+  if (selectedDateTime < now) {
+    return NextResponse.json(
+      {
+        error: "Não é possível agendar para data ou horário passado.",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
+  const appointmentExists = await Appointment.findOne({
+    barber,
+    date,
+    time,
+  });
+
+  if (appointmentExists) {
+    return NextResponse.json(
+      { error: "Este horário já está ocupado para este barbeiro." },
+      { status: 400 }
+    );
+  }
+
   const appointment = await Appointment.create({
     service,
     barber,
@@ -58,7 +85,6 @@ export async function POST(request: Request) {
     userId: session.user.id,
   });
 
-  // Revalida a rota do dashboard após criação
   revalidatePath("/dashboard");
 
   return NextResponse.json(

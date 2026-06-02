@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
@@ -89,6 +90,9 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     );
   }
 
+  // Revalida o dashboard após atualização
+  revalidatePath("/dashboard");
+
   return NextResponse.json({
     message: "Agendamento atualizado com sucesso.",
     appointment,
@@ -123,6 +127,9 @@ export async function DELETE(request: Request, { params }: RouteParams) {
   }
 
   await Appointment.deleteOne({ _id: id });
+
+  // Revalida o dashboard após exclusão
+  revalidatePath("/dashboard");
 
   return NextResponse.json({
     message: "Agendamento removido com sucesso.",

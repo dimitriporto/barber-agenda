@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
@@ -56,6 +57,9 @@ export async function POST(request: Request) {
     notes,
     userId: session.user.id,
   });
+
+  // Revalida a rota do dashboard após criação
+  revalidatePath("/dashboard");
 
   return NextResponse.json(
     {

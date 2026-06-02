@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAppointmentFilterStore } from "@/store/appointment-filter-store";
 
 type Appointment = {
   _id: string;
@@ -29,6 +30,7 @@ function formatDate(date: string) {
 export function AppointmentsList() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { filter, setFilter } = useAppointmentFilterStore();
 
   async function fetchAppointments() {
     const response = await fetch("/api/appointments");
@@ -78,83 +80,137 @@ export function AppointmentsList() {
     );
   }
 
+  const today = new Date().toISOString().split("T")[0];
+
+  const filteredAppointments = appointments.filter((appointment) => {
+    if (filter === "today") {
+      return appointment.date === today;
+    }
+
+    if (filter === "upcoming") {
+      return appointment.date > today;
+    }
+
+    return true;
+  });
+
   return (
-    <div className="grid gap-4">
-      {appointments.map((appointment) => (
-        <Card key={appointment._id} className="overflow-hidden">
-          <CardHeader className="flex flex-col gap-4 border-b bg-white sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#2E6B52]">
-                Serviço agendado
-              </p>
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant={filter === "all" ? "default" : "outline"}
+          className={filter === "all" ? "bg-[#1F4D3A] hover:bg-[#2E6B52]" : ""}
+          onClick={() => setFilter("all")}
+        >
+          Todos
+        </Button>
 
-              <CardTitle className="mt-1 text-2xl">
-                {appointment.service}
-              </CardTitle>
-            </div>
+        <Button
+          variant={filter === "today" ? "default" : "outline"}
+          className={
+            filter === "today" ? "bg-[#1F4D3A] hover:bg-[#2E6B52]" : ""
+          }
+          onClick={() => setFilter("today")}
+        >
+          Hoje
+        </Button>
 
-            <div className="flex gap-2">
-              <Button asChild variant="outline" size="sm">
-                <Link href={`/dashboard/editar/${appointment._id}`}>
-                  Editar
-                </Link>
-              </Button>
+        <Button
+          variant={filter === "upcoming" ? "default" : "outline"}
+          className={
+            filter === "upcoming" ? "bg-[#1F4D3A] hover:bg-[#2E6B52]" : ""
+          }
+          onClick={() => setFilter("upcoming")}
+        >
+          Próximos
+        </Button>
+      </div>
 
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => handleDelete(appointment._id)}
-              >
-                Excluir
-              </Button>
-            </div>
-          </CardHeader>
-
-          <CardContent className="grid gap-4 p-6 text-sm text-zinc-600 sm:grid-cols-3">
-            <div className="rounded-xl bg-zinc-50 p-4">
-              <p className="text-xs font-semibold uppercase text-[#2E6B52]">
-                Barbeiro
-              </p>
-
-              <p className="mt-1 font-semibold text-zinc-800">
-                {appointment.barber}
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-zinc-50 p-4">
-              <p className="text-xs font-semibold uppercase text-[#2E6B52]">
-                Data
-              </p>
-
-              <p className="mt-1 font-semibold text-zinc-800">
-                {formatDate(appointment.date)}
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-zinc-50 p-4">
-              <p className="text-xs font-semibold uppercase text-[#2E6B52]">
-                Horário
-              </p>
-
-              <p className="mt-1 font-semibold text-zinc-800">
-                {appointment.time}
-              </p>
-            </div>
-
-            {appointment.notes && (
-              <div className="rounded-xl bg-zinc-50 p-4 sm:col-span-3">
-                <p className="text-xs font-semibold uppercase text-[#2E6B52]">
-                  Observação
-                </p>
-
-                <p className="mt-1 text-zinc-700">
-                  {appointment.notes}
-                </p>
-              </div>
-            )}
+      {filteredAppointments.length === 0 ? (
+        <Card>
+          <CardContent className="p-8 text-center text-zinc-500">
+            Nenhum agendamento encontrado para este filtro.
           </CardContent>
         </Card>
-      ))}
+      ) : (
+        <div className="grid gap-4">
+          {filteredAppointments.map((appointment) => (
+            <Card key={appointment._id} className="overflow-hidden">
+              <CardHeader className="flex flex-col gap-4 border-b bg-white sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[#2E6B52]">
+                    Serviço agendado
+                  </p>
+
+                  <CardTitle className="mt-1 text-2xl">
+                    {appointment.service}
+                  </CardTitle>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/dashboard/editar/${appointment._id}`}>
+                      Editar
+                    </Link>
+                  </Button>
+
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(appointment._id)}
+                  >
+                    Excluir
+                  </Button>
+                </div>
+              </CardHeader>
+
+              <CardContent className="grid gap-4 p-6 text-sm text-zinc-600 sm:grid-cols-3">
+                <div className="rounded-xl bg-zinc-50 p-4">
+                  <p className="text-xs font-semibold uppercase text-[#2E6B52]">
+                    Barbeiro
+                  </p>
+
+                  <p className="mt-1 font-semibold text-zinc-800">
+                    {appointment.barber}
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-zinc-50 p-4">
+                  <p className="text-xs font-semibold uppercase text-[#2E6B52]">
+                    Data
+                  </p>
+
+                  <p className="mt-1 font-semibold text-zinc-800">
+                    {formatDate(appointment.date)}
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-zinc-50 p-4">
+                  <p className="text-xs font-semibold uppercase text-[#2E6B52]">
+                    Horário
+                  </p>
+
+                  <p className="mt-1 font-semibold text-zinc-800">
+                    {appointment.time}
+                  </p>
+                </div>
+
+                {appointment.notes && (
+                  <div className="rounded-xl bg-zinc-50 p-4 sm:col-span-3">
+                    <p className="text-xs font-semibold uppercase text-[#2E6B52]">
+                      Observação
+                    </p>
+
+                    <p className="mt-1 text-zinc-700">
+                      {appointment.notes}
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

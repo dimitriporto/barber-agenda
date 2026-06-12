@@ -15,7 +15,12 @@ import {
 
 const services = ["Corte Masculino", "Barba", "Corte + Barba"];
 
-const barbers = ["João", "Carlos", "Pedro"];
+type Professional = {
+  _id: string;
+  name: string;
+  email: string;
+  active: boolean;
+};
 
 const availableTimes = [
   "08:00",
@@ -59,6 +64,7 @@ function filterPastTimes(times: string[], selectedDate: string) {
 export default function NewAppointmentPage() {
   const [service, setService] = useState("");
   const [barber, setBarber] = useState("");
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
@@ -73,6 +79,21 @@ export default function NewAppointmentPage() {
     ),
     date
   );
+
+  useEffect(() => {
+    async function loadProfessionals() {
+      const response = await fetch("/api/professionals");
+      const data = await response.json();
+
+      const activeProfessionals = data.filter(
+        (professional: Professional) => professional.active
+      );
+
+      setProfessionals(activeProfessionals);
+    }
+
+    loadProfessionals();
+  }, []);
 
   useEffect(() => {
     async function loadAvailability() {
@@ -255,11 +276,20 @@ export default function NewAppointmentPage() {
                       </SelectTrigger>
 
                       <SelectContent>
-                        {barbers.map((item) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
+                        {professionals.length === 0 ? (
+                          <SelectItem value="none" disabled>
+                            Nenhum profissional cadastrado
                           </SelectItem>
-                        ))}
+                        ) : (
+                          professionals.map((professional) => (
+                            <SelectItem
+                              key={professional._id}
+                              value={professional.name}
+                            >
+                              {professional.name}
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                   </div>

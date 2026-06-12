@@ -18,6 +18,13 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+
+    // Define o tipo de usuário no sistema
+    role: {
+      type: String,
+      enum: ["admin", "professional", "client"],
+      default: "client",
+    },
   },
   {
     timestamps: true,

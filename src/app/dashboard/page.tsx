@@ -44,6 +44,15 @@ export default async function DashboardPage() {
 
             <Button
               asChild
+              variant="outline"
+            >
+              <Link href="/dashboard/admin/profissionais">
+                Profissionais
+              </Link>
+            </Button>
+
+            <Button
+              asChild
               className="bg-[#1F4D3A] hover:bg-[#2E6B52]"
             >
               <Link href="/dashboard/novo">

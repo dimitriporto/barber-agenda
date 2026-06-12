@@ -57,7 +57,7 @@ export default function AvailabilityManagementPage() {
 
   const [professionalId, setProfessionalId] = useState("");
   const [date, setDate] = useState("");
-  const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
+  const [selectedTimes, setSelectedTimes] = useState<string[]>(availableTimes);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -117,7 +117,7 @@ export default function AvailabilityManagementPage() {
       setMessage("Disponibilidade salva com sucesso.");
       setProfessionalId("");
       setDate("");
-      setSelectedTimes([]);
+      setSelectedTimes(availableTimes);
       loadAvailabilities();
     } else {
       const data = await response.json();

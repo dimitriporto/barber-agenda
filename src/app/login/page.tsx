@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 
 import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/ui/button";

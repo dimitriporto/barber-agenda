@@ -13,6 +13,12 @@ const ProfessionalSchema = new Schema(
       unique: true,
     },
 
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
     active: {
       type: Boolean,
       default: true,

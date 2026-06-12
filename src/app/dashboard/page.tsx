@@ -17,6 +17,8 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
+  const role = (session.user as { role?: string }).role;
+
   return (
     <main className="min-h-screen bg-[#F5F5F5] px-6 py-10">
       <section className="mx-auto max-w-5xl space-y-6">
@@ -26,11 +28,15 @@ export default async function DashboardPage() {
 
             <div>
               <h1 className="text-3xl font-bold text-[#1F4D3A]">
-                Meus agendamentos
+                {role === "professional"
+                  ? "Minha agenda"
+                  : "Meus agendamentos"}
               </h1>
 
               <p className="text-zinc-500">
-                Consulte e gerencie seus horários marcados.
+                {role === "professional"
+                  ? "Consulte os horários agendados com você."
+                  : "Consulte e gerencie seus horários marcados."}
               </p>
             </div>
           </div>
@@ -42,23 +48,35 @@ export default async function DashboardPage() {
 
             <LogoutButton />
 
-            <Button
-              asChild
-              variant="outline"
-            >
-              <Link href="/dashboard/admin/profissionais">
-                Profissionais
-              </Link>
-            </Button>
+            {role === "admin" && (
+              <>
+                <Button asChild variant="outline">
+                  <Link href="/dashboard/admin/profissionais">
+                    Profissionais
+                  </Link>
+                </Button>
 
-            <Button
-              asChild
-              variant="outline"
-            >
-              <Link href="/dashboard/admin/disponibilidade">
-                Disponibilidade
-              </Link>
-            </Button>
+                <Button asChild variant="outline">
+                  <Link href="/dashboard/admin/disponibilidade">
+                    Disponibilidade
+                  </Link>
+                </Button>
+
+                <Button asChild variant="outline">
+                  <Link href="/dashboard/profissional">
+                    Agenda profissional
+                  </Link>
+                </Button>
+              </>
+            )}
+
+            {role === "professional" && (
+              <Button asChild variant="outline">
+                <Link href="/dashboard/profissional">
+                  Minha agenda
+                </Link>
+              </Button>
+            )}
 
             <Button
               asChild
@@ -71,7 +89,14 @@ export default async function DashboardPage() {
           </div>
         </header>
 
-        <AppointmentsList />
+        {role === "professional" ? (
+          <div className="rounded-2xl bg-white p-6 text-zinc-500 shadow-sm">
+            Acesse o botão <strong>Minha agenda</strong> para visualizar seus
+            atendimentos.
+          </div>
+        ) : (
+          <AppointmentsList />
+        )}
       </section>
     </main>
   );

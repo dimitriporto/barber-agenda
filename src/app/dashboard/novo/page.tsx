@@ -69,14 +69,14 @@ export default function NewAppointmentPage() {
   const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
 
-  const [unavailableTimes, setUnavailableTimes] = useState<string[]>([]);
+  const [availableProfessionalTimes, setAvailableProfessionalTimes] = useState<
+    string[]
+  >([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const filteredTimes = filterPastTimes(
-    availableTimes.filter(
-      (availableTime) => !unavailableTimes.includes(availableTime)
-    ),
+    availableProfessionalTimes,
     date
   );
 
@@ -98,7 +98,7 @@ export default function NewAppointmentPage() {
   useEffect(() => {
     async function loadAvailability() {
       if (!barber || !date) {
-        setUnavailableTimes([]);
+        setAvailableProfessionalTimes([]);
         setTime("");
         return;
       }
@@ -110,15 +110,14 @@ export default function NewAppointmentPage() {
       );
 
       const data = await response.json();
-      const occupiedTimes = data.unavailableTimes || [];
+      const availableTimes = data.availableTimes || [];
 
-      setUnavailableTimes(occupiedTimes);
+      setAvailableProfessionalTimes(availableTimes);
 
-      if (time && occupiedTimes.includes(time)) {
+      if (time && !availableTimes.includes(time)) {
         setTime("");
       }
     }
-
     loadAvailability();
   }, [barber, date]);
 

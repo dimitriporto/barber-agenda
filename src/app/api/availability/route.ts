@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 
 import { connectDB } from "@/lib/db";
 import { Appointment } from "@/models/Appointment";
+import { Availability } from "@/models/Availability";
 
-// Retorna horários já ocupados por barbeiro e data
+// Retorna horários disponíveis por barbeiro e data
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
@@ -19,6 +20,18 @@ export async function GET(request: Request) {
 
   await connectDB();
 
+  const availability = await Availability.findOne({
+    professionalName: barber,
+    date,
+  });
+
+  if (!availability) {
+    return NextResponse.json({
+      availableTimes: [],
+      unavailableTimes: [],
+    });
+  }
+
   const appointments = await Appointment.find({
     barber,
     date,
@@ -28,7 +41,12 @@ export async function GET(request: Request) {
     (appointment) => appointment.time
   );
 
+  const availableTimes = availability.times.filter(
+    (time: string) => !unavailableTimes.includes(time)
+  );
+
   return NextResponse.json({
+    availableTimes,
     unavailableTimes,
   });
 }
